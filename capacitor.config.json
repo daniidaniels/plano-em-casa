@@ -1,0 +1,12 @@
+{
+  "appId": "com.danielsantos.planoemcasa",
+  "appName": "Plano em Casa",
+  "webDir": "www",
+  "backgroundColor": "#000000",
+  "android": { "backgroundColor": "#000000" },
+  "plugins": {
+    "CapacitorHttp": { "enabled": true },
+    "SystemBars": { "insetsHandling": "css", "style": "DARK", "initialViewportFitValueHint": "cover" },
+    "LocalNotifications": { "smallIcon": "ic_stat_icon", "iconColor": "#0A84FF" }
+  }
+}

@@ -1,0 +1,4 @@
+node_modules/
+*.apk
+.DS_Store
+icon-512.png

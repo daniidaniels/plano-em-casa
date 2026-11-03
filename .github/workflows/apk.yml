@@ -1,0 +1,45 @@
+name: Gerar APK
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  apk:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: 21
+      - uses: android-actions/setup-android@v3
+      - name: Dependências
+        run: npm ci
+      - name: Copiar o app web para o Android
+        run: npx cap sync android
+      - name: Compilar APK assinado
+        working-directory: android
+        run: |
+          chmod +x gradlew
+          ./gradlew assembleRelease --no-daemon
+      - name: Renomear
+        run: cp android/app/build/outputs/apk/release/app-release.apk PlanoEmCasa-v1.0.${{ github.run_number }}.apk
+      - uses: actions/upload-artifact@v4
+        with:
+          name: PlanoEmCasa-APK
+          path: PlanoEmCasa-*.apk
+      - name: Publicar versão
+        uses: softprops/action-gh-release@v2
+        with:
+          tag_name: v1.0.${{ github.run_number }}
+          name: Plano em Casa 1.0.${{ github.run_number }}
+          body: APK assinado do Plano em Casa. Baixe no celular e instale por cima da versão anterior.
+          files: PlanoEmCasa-*.apk
